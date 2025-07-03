@@ -29,4 +29,24 @@ if 'Billing Amount' in df.columns:
     df['BillingAmount_zscore'] = (df['Billing Amount'] - mean_val) / std_val
     print("Billing Amount column is normalized using Z-Score Standardization.")
 
+# binary mapping for simple categorical columns
+binary_maps = {
+    'Gender': {'Male': 0, 'Female': 1}
+}
+
+for col, mapping in binary_maps.items():
+    if col in df.columns:
+        df[f'{col}_encoded'] = df[col].map(mapping)
+        print(f"✅ {col} encoded as 0/1.")
+
+# one-hot encoding for multi-category columns
+one_hot_columns = ['Blood Type', 'Admission Type']
+
+for col in one_hot_columns:
+    if col in df.columns:
+        dummies = pd.get_dummies(df[col], prefix=col.replace(" ", ""))
+        df = pd.concat([df, dummies], axis=1)
+        print(f"✅ {col} one-hot encoded.")
+
+
 
