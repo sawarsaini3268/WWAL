@@ -43,3 +43,9 @@ for col in categorical_cols:
         df = pd.concat([df, dummies], axis=1)
         print(f"{col} column one-hot encoded.")
 
+# encode HeartDisease as 0/1 for correlation (this is the target -- usually leave the target column unchanged)
+if 'HeartDisease' in df.columns:
+    df['HeartDisease_encoded'] = df['HeartDisease'].map({'Yes': 1, 'No': 0})
+    print("HeartDisease column encoded as 0/1.")
+
+
