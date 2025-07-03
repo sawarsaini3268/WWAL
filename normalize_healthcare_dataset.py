@@ -63,5 +63,15 @@ if 'Discharge Date' in df.columns:
     df['DischargeDate_offset'] = (df['Discharge Date'] - reference_date).dt.days
     print("Discharge Date converted to offset days.")
 
+# one-hot encoding for additional categorical columns
+additional_one_hot_columns = ['Medical Condition', 'Medication', 'Test Results']
+
+for col in additional_one_hot_columns:
+    if col in df.columns:
+        dummies = pd.get_dummies(df[col], prefix=col.replace(" ", ""))
+        df = pd.concat([df, dummies], axis=1)
+        print(f"{col} one-hot encoded.")
+
+
 
 
