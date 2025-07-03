@@ -78,6 +78,41 @@ output_path = r'C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_d
 df.to_csv(output_path, index=False)
 print(f"Normalized dataset saved as: {output_path}")
 
+# build list of columns to keep in trimmed dataset
+
+# manually include important normalized columns
+columns_to_keep = [
+    'Age_normalized',
+    'BillingAmount_zscore',
+    'Gender_encoded',
+    'AdmissionDate_offset',
+    'DischargeDate_offset'
+]
+
+# dynamically add all one-hot encoded columns based on consistent prefixes
+one_hot_prefixes = [
+    'BloodType_',
+    'AdmissionType_',
+    'MedicalCondition_',
+    'Medication_',
+    'TestResults_'
+]
+
+# loop through columns and add any matching those prefixes
+for col in df.columns:
+    if any(col.startswith(prefix) for prefix in one_hot_prefixes):
+        columns_to_keep.append(col)
+
+# create new trimmed dataframe
+df_trimmed = df[columns_to_keep]
+
+# save to THE_datasets_cleaned folder
+output_path_trimmed = r'C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_cleaned\healthcare_dataset_normalized_trimmed.csv'
+
+df_trimmed.to_csv(output_path_trimmed, index=False)
+print(f"Trimmed normalized dataset saved to: {output_path_trimmed}")
+
+
 
 
 
