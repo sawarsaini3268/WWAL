@@ -37,7 +37,7 @@ binary_maps = {
 for col, mapping in binary_maps.items():
     if col in df.columns:
         df[f'{col}_encoded'] = df[col].map(mapping)
-        print(f"✅ {col} encoded as 0/1.")
+        print(f"{col} encoded as 0/1.")
 
 # one-hot encoding for multi-category columns
 one_hot_columns = ['Blood Type', 'Admission Type']
@@ -46,7 +46,22 @@ for col in one_hot_columns:
     if col in df.columns:
         dummies = pd.get_dummies(df[col], prefix=col.replace(" ", ""))
         df = pd.concat([df, dummies], axis=1)
-        print(f"✅ {col} one-hot encoded.")
+        print(f"{col} one-hot encoded.")
+
+# reference date for offset calculation
+reference_date = datetime.datetime(1970, 1, 1)
+
+# convert Date of Admission
+if 'Date of Admission' in df.columns:
+    df['Date of Admission'] = pd.to_datetime(df['Date of Admission'], errors='coerce')
+    df['AdmissionDate_offset'] = (df['Date of Admission'] - reference_date).dt.days
+    print("Date of Admission converted to offset days.")
+
+# convert Discharge Date
+if 'Discharge Date' in df.columns:
+    df['Discharge Date'] = pd.to_datetime(df['Discharge Date'], errors='coerce')
+    df['DischargeDate_offset'] = (df['Discharge Date'] - reference_date).dt.days
+    print("Discharge Date converted to offset days.")
 
 
 
