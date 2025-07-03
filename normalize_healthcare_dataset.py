@@ -72,6 +72,12 @@ for col in additional_one_hot_columns:
         df = pd.concat([df, dummies], axis=1)
         print(f"{col} one-hot encoded.")
 
+# save the normalized dataset directly to THE_datasets_cleaned folder
+output_path = r'C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_cleaned\healthcare_dataset_normalized.csv'
+
+df.to_csv(output_path, index=False)
+print(f"✅ Normalized dataset saved as: {output_path}")
+
 
 
 
