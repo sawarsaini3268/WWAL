@@ -22,3 +22,11 @@ if 'Age' in df.columns:
     df['Age_normalized'] = scaler_age.fit_transform(df[['Age']])
     print("Age column is normalized using Min-Max Scaling.")
 
+# normalize Billing Amount using Z-Score Standardization
+if 'Billing Amount' in df.columns:
+    mean_val = df['Billing Amount'].mean()
+    std_val = df['Billing Amount'].std()
+    df['BillingAmount_zscore'] = (df['Billing Amount'] - mean_val) / std_val
+    print("Billing Amount column is normalized using Z-Score Standardization.")
+
+
