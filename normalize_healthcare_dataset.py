@@ -76,7 +76,7 @@ for col in additional_one_hot_columns:
 output_path = r'C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_cleaned\healthcare_dataset_normalized.csv'
 
 df.to_csv(output_path, index=False)
-print(f"✅ Normalized dataset saved as: {output_path}")
+print(f"Normalized dataset saved as: {output_path}")
 
 
 
