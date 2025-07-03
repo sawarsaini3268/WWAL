@@ -33,3 +33,13 @@ for col in yes_no_cols:
     if col in df.columns:
         df[col + '_encoded'] = df[col].map({'Yes': 1, 'No': 0})
         print(f"{col} column encoded as 0/1.")
+
+# one-hot encode categorical columns
+categorical_cols = ['Sex', 'AgeCategory', 'Race', 'Diabetic', 'GenHealth']
+
+for col in categorical_cols:
+    if col in df.columns:
+        dummies = pd.get_dummies(df[col], prefix=col.replace(" ", ""))
+        df = pd.concat([df, dummies], axis=1)
+        print(f"{col} column one-hot encoded.")
+
