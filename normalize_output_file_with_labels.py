@@ -1,8 +1,8 @@
 import pandas as pd
 
 # Load both files
-labels_df = pd.read_csv(r'C:\path\to\output_file_with_labels.csv')  # Labels mapping file
-data_df = pd.read_csv(r'C:\path\to\output_file.csv')                # Actual dataset file
+labels_df = pd.read_csv(r'"C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_not_cleaned\output_file_with_labels.csv"')  # Labels mapping file
+data_df = pd.read_csv(r'"C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_not_cleaned\output_file.csv"')                # Actual dataset file
 
 # Print column names from the actual dataset
 print("Dataset Columns:")
