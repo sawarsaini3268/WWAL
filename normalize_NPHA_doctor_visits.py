@@ -6,6 +6,8 @@ from sklearn.preprocessing import MinMaxScaler
 filename = r'C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_not_cleaned\NPHA-doctor-visits.csv'
 df = pd.read_csv(filename)
 
+df.columns = df.columns.str.strip() #strips any extra spaces
+
 print("File loaded successfully.")
 print(df.columns.tolist()) # add .toList() to print the full list of column names exactly as pandas reads them
 
@@ -14,7 +16,7 @@ scaler = MinMaxScaler()
 
 # list of columns to normalize
 columns_to_normalize = [ 'Age',
-    'Physical Health',
+    'Phyiscal Health',
     'Mental Health',
     'Stress Keeps Patient from Sleeping',
     'Bathroom Needs Keeps Patient from Sleeping',
