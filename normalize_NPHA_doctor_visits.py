@@ -25,7 +25,7 @@ categorical_columns = ['Race', 'Gender']
 
 for col in categorical_columns:
     if col in df.columns:
-        dummies = pd.get_dummies(df[col], prefix=col, drop_first=False)
+        dummies = pd.get_dummies(df[col], prefix=col.replace(" ", ""), drop_first=False)
         df = pd.concat([df, dummies], axis=1)
         print(f"{col} column one-hot encoded.")
 
