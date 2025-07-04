@@ -13,7 +13,12 @@ print(df.columns.tolist()) # add .toList() to print the full list of column name
 scaler = MinMaxScaler()
 
 # list of columns to normalize
-columns_to_normalize = ['Age', 'Physical Health', 'Mental Health', 'Stress Keeping', 'Bathroom', 'Trouble Sleeping']
+columns_to_normalize = [ 'Age',
+    'Physical Health',
+    'Mental Health',
+    'Stress Keeps Patient from Sleeping',
+    'Bathroom Needs Keeps Patient from Sleeping',
+    'Trouble Sleeping']
 
 for col in columns_to_normalize:
     if col in df.columns:
