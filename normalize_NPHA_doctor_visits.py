@@ -7,7 +7,7 @@ filename = r'C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_data
 df = pd.read_csv(filename)
 
 print("File loaded successfully.")
-print(df.columns)
+print(df.columns.tolist()) # add .toList() to print the full list of column names exactly as pandas reads them
 
 # min-max scaling (normalize numerical columns)
 scaler = MinMaxScaler()
