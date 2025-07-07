@@ -1,10 +1,10 @@
 import pandas as pd
-from sklearn.preprocessing import MinMaxScaler
+import json
 
-#load dataset
-file_path = r"C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_not_cleaned\output_file_with_full_labels.csv"
-df = pd.read_csv(file_path, header=0)
+# load dataset
+df = pd.read_csv(r"C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_not_cleaned\output_file_with_full_labels.csv")
 
-#strip spaces from all column names to avoid KeyErrors due to hidden spaces
-df.columns = df.columns.str.strip()
+# load column category JSON
+with open(r"C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_cleaned\output_file\column_groups.json") as f:
+    column_groups = json.load(f)
 
