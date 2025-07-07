@@ -5,11 +5,14 @@ from sklearn.preprocessing import MinMaxScaler
 file_path = r"C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_not_cleaned\output_file_with_full_labels.csv"
 df = pd.read_csv(file_path, header=0)
 
+#strip spaces from all column names to avoid KeyErrors due to hidden spaces
+df.columns = df.columns.str.strip()
+
 # remove rows where the first column accidentally repeated the header name
 first_col_name = df.columns[0]
 df = df[df[first_col_name] != first_col_name]
 
-print(f"Dataset shape after cleaning: {df.shape}") # shows (rows, columns) after cleaning
+print(f"Dataset shape after cleaning: {df.shape}")
 
 # count rows with at least one NaN value
 nan_rows = df[df.isna().any(axis=1)]
@@ -17,7 +20,6 @@ nan_count = nan_rows.shape[0]
 total_rows = df.shape[0]
 nan_percentage = (nan_count / total_rows) * 100
 print(f"Rows with at least one NaN: {nan_count} out of {total_rows} ({nan_percentage:.2f}%)")
-
 
 # selective NaN handling for categorical columns 
 categorical_columns = [
@@ -43,12 +45,12 @@ categorical_columns = [
     "Final number of Care Recipients"
 ]
 
-# replace NaN with 'Unknown' in those columns only
-df[categorical_columns] = df[categorical_columns].fillna("Unknown")
+# Only apply .fillna() to columns that actually exist, replace NaN with "Unknown" in these columns only
+categorical_columns_present = [col for col in categorical_columns if col in df.columns]
+df[categorical_columns_present] = df[categorical_columns_present].fillna("Unknown")
 
-
-# replaces categorical columns with binary indicator columns (0/1) (one-hot encoding)
-df_encoded = pd.get_dummies(df, columns=categorical_columns, prefix_sep="_", drop_first=False)
+# replaces categorical columns with binary indicator 
+df_encoded = pd.get_dummies(df, columns=categorical_columns_present, prefix_sep="_", drop_first=False)
 print(f"One-hot encoding applied. New shape: {df_encoded.shape}")
 
 # columns  for Min-Max scaling
@@ -71,7 +73,7 @@ df_encoded[min_max_columns_present] = scaler.fit_transform(df_encoded[min_max_co
 print(f"Min-Max scaling applied to columns: {min_max_columns_present}")
 print(f"Final dataset shape: {df_encoded.shape}")
 
+#save dataset
 output_path_normalized = r'C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_cleaned\output_file_normalized.csv'
 df_encoded.to_csv(output_path_normalized, index=False)
 print(f"Normalized, cleaned dataset saved to: {output_path_normalized}")
-
