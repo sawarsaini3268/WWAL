@@ -5,7 +5,8 @@ from sklearn.preprocessing import MinMaxScaler
 file_path = r"C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_not_cleaned\output_file_with_full_labels.csv"
 df = pd.read_csv(file_path, header=0)
 
-# remove rows where the first column accidentally repeated the header namefirst_col_name = df.columns[0]
+# remove rows where the first column accidentally repeated the header name
+first_col_name = df.columns[0]
 df = df[df[first_col_name] != first_col_name]
 
 print(f"Dataset shape after cleaning: {df.shape}") # shows (rows, columns) after cleaning
