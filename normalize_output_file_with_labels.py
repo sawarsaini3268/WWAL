@@ -27,11 +27,17 @@ print(df[column_groups['date']].dtypes)
 for col in column_groups['categorical']:
     df[col] = df[col].astype(str)
 
+# print dtypes BEFORE one-hot encoding to avoid losing the original columns
+print("Categorical columns before one-hot encoding:")
+print(df[column_groups['categorical']].dtypes)
+
 # apply one-hot encoding
 df = pd.get_dummies(df, columns=column_groups['categorical'], drop_first=True)
 
-# double checking what got encoded
-print(df[column_groups['categorical']].dtypes) 
+# prints a sample of the new columns
+print("Sample of one-hot encoded columns:")
+print(df.columns[df.columns.str.contains('_')][:10])  # just a peek
+
 
 # min-max scaling
 minmax_scaler = MinMaxScaler()
