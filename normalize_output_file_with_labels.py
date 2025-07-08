@@ -53,12 +53,12 @@ if column_groups["zscore"]:
 
 # save full normalized version
 df.to_csv(r"C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_cleaned\output_file\output_file_cleaned_normalized.csv", index=False)
-print("✅ Normalized dataset saved.")
+print("Normalized dataset saved.")
 
 # trim dataset 
 df_trimmed = df.dropna()
 
 # save trimmed version
 df_trimmed.to_csv(r"C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_cleaned\output_file\output_file_cleaned_normalized_trimmed.csv", index=False)
-print("✂️ Normalized + Trimmed dataset saved.")
+print("Normalized + Trimmed dataset saved.")
 
