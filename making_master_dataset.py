@@ -1,10 +1,10 @@
 import pandas as pd
 
 # loading all trimmed + normalized datasets
-healthcare_df = pd.read_csv("THE_datasets_cleaned/healthcare_dataset_normalized_trimmed.csv")
-heart_df = pd.read_csv("THE_datasets_cleaned/heart_2020_dataset_normalized_trimmed.csv")
-npha_df = pd.read_csv("THE_datasets_cleaned/NPHA_doctor_visits_normalized_trimmed.csv")
-output_df = pd.read_csv("THE_datasets_cleaned/output_file_cleaned_normalized_trimmed.csv")
+healthcare_df = pd.read_csv(r"C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_cleaned\trimmed\healthcare_dataset_normalized_trimmed.csv")
+heart_df = pd.read_csv(r"C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_cleaned\trimmed\heart_2020_dataset_normalized_trimmed.csv")
+npha_df = pd.read_csv(r"C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_cleaned\trimmed\NPHA_doctor_visits_normalized_trimmed.csv")
+output_df = pd.read_csv(r"C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_cleaned\trimmed\output_file_cleaned_normalized_trimmed.csv")
 
 # choosing 3–5 important columns from each dataset
 healthcare_cols = [
