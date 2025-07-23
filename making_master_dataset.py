@@ -56,4 +56,4 @@ output_sub = output_sub.iloc[:min_length]
 master_df = pd.concat([healthcare_sub, heart_sub, npha_sub, output_sub], axis=1)
 
 # save to CSV
-master_df.to_csv("THE_datasets_cleaned/WWAL_synthetic_master_dataset.csv", index=False)
+master_df.to_csv(r"C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_cleaned\WWAL_synthetic_master_dataset.csv", index=False)
