@@ -4,7 +4,7 @@ import pandas as pd
 output = pd.read_csv(r"C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_cleaned\trimmed\output_file_cleaned_normalized_trimmed.csv")
 
 # Show the first 50 column names
-print(output.columns[:50])
+print(output.columns[:150])
 
 
 
