@@ -1,10 +1,16 @@
 import pandas as pd
 
-# Load the output dataset
-output = pd.read_csv(r"C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_cleaned\trimmed\healthcare_dataset_normalized_trimmed.csv")
+# Load the heart dataset
+heart = pd.read_csv(r"C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_cleaned\trimmed\heart_2020_dataset_normalized_trimmed.csv")
 
 # Show the first 50 column names
-print(output.columns[:50])
+print(heart.columns[:50])
+
+# Load the NPHA dataset
+npha = pd.read_csv(r"C:\Users\sawar\OneDrive\UN_LearningPlanet\dataset_analysis\THE_datasets_cleaned\trimmed\NPHA_doctor_visits_normalized_trimmed.csv")
+
+# Show the first 50 column names
+print(npha.columns[:50])
 
 
 
