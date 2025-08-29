@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 
 # settings
-DATA_DIR   = Path(r"C:\Users\sawar\OneDrive\dataset_analysis\WWAL_Code")  
+DATA_DIR   = Path(r"C:\Users\sawar_as58gjw\OneDrive\dataset_analysis\WWAL_Code")  
 CSV_GLOB   = "*normalized_trimmed.csv"   # which files to grab
 OUTPUT_DIR = Path(DATA_DIR / "WWAL_within_corr")  # results folder
 METHODS    = ["pearson", "spearman"]     # both correlation types
