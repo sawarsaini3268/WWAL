@@ -142,11 +142,11 @@ colors_dict = {
 }
 
 # ---- Figure with two columns: graph (wide) + results table (narrow)
-fig = plt.figure(figsize=(13.5, 6.5))  # wider figure to fit table
+fig = plt.figure(figsize=(16, 6.5))  # wider figure to fit table
 gs  = gridspec.GridSpec(
     ncols=3, nrows=1,
     width_ratios=[3.0, 0.08, 1.6],  # give table column more space
-    wspace=0.20                     # slightly wider gap between graph & table
+    wspace=0.1                     # slightly wider gap between graph & table
 )
 
 axg = fig.add_subplot(gs[0])
