@@ -80,7 +80,7 @@ G = nx.DiGraph()
 
 # Nodes by theme
 nodes_burden   = ["Chronic Conditions", "Workplace Accommodations", "ADL Limitations"]
-nodes_health   = ["Mobility Difficulty", "Overall Health", "Mental Health", "Physical Health"]
+nodes_health   = ["Mobility Difficulty", "Overall Health", "Mental Health", "Physical Health", "Sleep Problems"]
 nodes_support  = ["Physical Activity", "Support Activities", "# Care Recipients"]
 
 G.add_nodes_from(nodes_burden + nodes_health + nodes_support)
@@ -92,32 +92,24 @@ edges = {
     "H3": ("Mental Health", "Physical Health"),
     "H4": ("Mobility Difficulty", "Overall Health"),
     "H5": ("Physical Activity", "Mobility Difficulty"),
-    "H6": ("Overall Health", "Sleep Problems")  # create node if not in graph
-    if "Sleep Problems" in G.nodes else ("Overall Health", "Sleep Problems"),
+    "H6": ("Overall Health", "Sleep Problems"),
     "H7": ("Support Activities", "# Care Recipients")
 }
 
-# Ensure "Sleep Problems" exists (H6)
-if "Sleep Problems" not in G.nodes:
-    G.add_node("Sleep Problems")
-
-# Add edges with attributes
-for (h, (u, v)), r, q in zip(edges.items(), r_values, q_values):
-    G.add_edge(u, v, key=h, r=r, q=q, significant=(q < 0.05))
+# Add edges with attributes (store the hypothesis label explicitly)
+for h, (u, v), r, q in zip(edges.keys(), edges.values(), r_values, q_values):
+    G.add_edge(u, v, hypothesis=h, r=r, q=q, significant=(q < 0.05))
 
 # Node colors
 colors_dict = {
-    # burden / exposure
     "Chronic Conditions": "mistyrose",
     "Workplace Accommodations": "mistyrose",
     "ADL Limitations": "mistyrose",
-    # health status links
     "Mobility Difficulty": "khaki",
     "Overall Health": "khaki",
     "Mental Health": "khaki",
     "Physical Health": "khaki",
     "Sleep Problems": "khaki",
-    # protective / support
     "Physical Activity": "lightsteelblue",
     "Support Activities": "lightsteelblue",
     "# Care Recipients": "lightsteelblue",
@@ -126,51 +118,39 @@ colors_dict = {
 plt.figure(figsize=(10, 6.6))
 pos = nx.spring_layout(G, seed=42)
 
-# Draw nodes
 nx.draw_networkx_nodes(
     G, pos,
     node_color=[colors_dict.get(n, "lightgray") for n in G.nodes()],
-    node_size=2900,
-    edgecolors="gray",
-    linewidths=0.8
+    node_size=2900, edgecolors="gray", linewidths=0.8
 )
 nx.draw_networkx_labels(G, pos, font_size=9, font_weight="bold")
 
-# Edge styling by sign & significance
-for (u, v, k), data in G.edges.items():
-    r = data["r"]
-    q = data["q"]
-    significant = data["significant"]
-
+# Correct iteration for DiGraph: (u, v, data)
+for u, v, data in G.edges(data=True):
+    r = data["r"]; q = data["q"]; significant = data["significant"]
     color = "red" if r > 0 else "steelblue"
     style = "-" if significant else (0, (4, 4))  # dashed if not significant
     width = 2.5 if significant else 1.5
     alpha = 1.0 if significant else 0.55
 
     nx.draw_networkx_edges(
-        G, pos,
-        edgelist=[(u, v)],
-        width=width,
-        alpha=alpha,
-        edge_color=color,
-        arrows=True,
-        arrowsize=18,
-        style=style
+        G, pos, edgelist=[(u, v)],
+        width=width, alpha=alpha, edge_color=color,
+        arrows=True, arrowsize=18, style=style
     )
 
-    # Edge labels with r and q
-    label = f"{k}: r={r:.3f}, q={q:.3f}"
+    label = f"{data['hypothesis']}: r={r:.3f}, q={q:.3f}"
     nx.draw_networkx_edge_labels(
         G, pos,
         edge_labels={(u, v): label},
-        font_size=8,
-        label_pos=0.5,
+        font_size=8, label_pos=0.5,
         bbox=dict(boxstyle="round,pad=0.2", fc="white", ec="none", alpha=0.8)
     )
 
 plt.title("Figure 2. Directed Acyclic Graph of Risk (red) and Resilience (blue) Pathways\n(Solid = q<0.05; Dashed = not significant)")
 plt.tight_layout()
 plt.show()
+
 
 # ============================================================================
 # FIGURE 3. CORRELATION MAGNITUDES (bars; significance & direction encoded)
