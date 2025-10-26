@@ -121,8 +121,88 @@ pos = {
     "Sleep Problems":          (0.88, 0.14),  # (target from H6)
 
     # Count / context
-    "# Care Recipients":       (0.38, 0.10),  # (target
-    
+    "# Care Recipients":       (0.38, 0.10),  # (target from H7)
+}
+
+# Node colors
+colors_dict = {
+    "Chronic Conditions": "mistyrose",
+    "Workplace Accommodations": "mistyrose",
+    "ADL Limitations": "mistyrose",
+
+    "Mobility Difficulty": "khaki",
+    "Overall Health": "khaki",
+    "Mental Health": "khaki",
+    "Physical Health": "khaki",
+    "Sleep Problems": "khaki",
+
+    "Physical Activity": "lightsteelblue",
+    "Support Activities": "lightsteelblue",
+    "# Care Recipients": "lightsteelblue",
+}
+
+# ---- Figure with two columns: graph (wide) + results table (narrow)
+fig = plt.figure(figsize=(11.5, 6.5))
+gs  = gridspec.GridSpec(ncols=3, nrows=1, width_ratios=[3.0, 0.08, 1.3], wspace=0.15)
+
+axg = fig.add_subplot(gs[0])  # graph
+axt = fig.add_subplot(gs[2])  # table
+
+# Draw nodes
+nx.draw_networkx_nodes(
+    G, pos, ax=axg,
+    node_color=[colors_dict.get(n, "lightgray") for n in G.nodes()],
+    node_size=2900, edgecolors="gray", linewidths=0.8
+)
+nx.draw_networkx_labels(G, pos, ax=axg, font_size=9, font_weight="bold")
+
+# Draw edges with style by sign & significance
+for u, v, data in G.edges(data=True):
+    r = data["r"]; significant = data["significant"]
+    color = "red" if r > 0 else "steelblue"
+    style = "-" if significant else (0, (4, 4))   # dashed if not significant
+    width = 2.6 if significant else 1.6
+    alpha = 1.0 if significant else 0.6
+
+    nx.draw_networkx_edges(
+        G, pos, ax=axg, edgelist=[(u, v)],
+        width=width, alpha=alpha, edge_color=color,
+        arrows=True, arrowsize=18, style=style,
+        connectionstyle="arc3,rad=0.05"  # slight curve to reduce overlap
+    )
+
+axg.set_title(
+    "Figure 2. Directed Acyclic Graph of Risk (red) and Resilience (blue) Pathways\n"
+    "(Solid = q<0.05; Dashed = not significant)",
+    pad=16
+)
+axg.axis("off")
+
+# ---------------- Side table with r, q, significance -----------------
+# Build table data
+table_rows = []
+for h, r, q in zip(hypotheses, r_values, q_values):
+    sign = "✔" if q < 0.05 else "—"
+    dirn = "+" if r > 0 else "–"
+    table_rows.append([h, dirn, f"{r:.3f}", f"{q:.3f}", sign])
+
+col_labels = ["H", "Dir", "r", "q (FDR)", "Sig"]
+the_table = axt.table(cellText=table_rows, colLabels=col_labels, loc="center")
+the_table.auto_set_font_size(False)
+the_table.set_fontsize(9)
+the_table.scale(1.05, 1.25)
+
+# Color r column text by direction (optional cosmetic)
+for i, r in enumerate(r_values, start=1):  # +1 because row 0 is header
+    color = "red" if r > 0 else "steelblue"
+    the_table[(i, 2)].get_text().set_color(color)  # r column
+
+axt.set_axis_off()
+
+plt.tight_layout()
+plt.show()
+
+
 # ============================================================================
 # FIGURE 3. CORRELATION MAGNITUDES (bars; significance & direction encoded)
 # ============================================================================
