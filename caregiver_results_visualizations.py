@@ -160,6 +160,9 @@ nx.draw_networkx_nodes(
 )
 nx.draw_networkx_labels(G, pos, ax=axg, font_size=9, font_weight="bold")
 
+axg.set_xlim(-0.08, 1.03)   # add horizontal padding so left/right labels aren’t cut off
+axg.set_ylim(-0.03, 1.03)   # tiny vertical padding to
+
 # Draw edges with style by sign & significance
 for u, v, data in G.edges(data=True):
     r = data["r"]; significant = data["significant"]
