@@ -142,7 +142,7 @@ colors_dict = {
 }
 
 # ---- Figure with two columns: graph (wide) + results table (narrow)
-fig = plt.figure(figsize=(16, 6.5))  # wider figure to fit table
+fig = plt.figure(figsize=(25, 6.5))  # wider figure to fit table
 gs  = gridspec.GridSpec(
     ncols=3, nrows=1,
     width_ratios=[3.0, 0.08, 1.6],  # give table column more space
