@@ -74,18 +74,20 @@ plt.tight_layout()
 plt.show()
 
 # ============================================================================
-# FIGURE 2. DAG – CONCEPTUAL PATHWAYS (edges styled by sign & significance)
+# FIGURE 2. DAG – Clean layout + side table (no cluttered edge labels)
 # ============================================================================
+import matplotlib.gridspec as gridspec
+
 G = nx.DiGraph()
 
-# Nodes by theme
+# Nodes grouped by role
 nodes_burden   = ["Chronic Conditions", "Workplace Accommodations", "ADL Limitations"]
 nodes_health   = ["Mobility Difficulty", "Overall Health", "Mental Health", "Physical Health", "Sleep Problems"]
 nodes_support  = ["Physical Activity", "Support Activities", "# Care Recipients"]
 
 G.add_nodes_from(nodes_burden + nodes_health + nodes_support)
 
-# Map each hypothesis to an edge with its r and q
+# Hypothesis → edge map (keep it 1:1 with H1–H7)
 edges = {
     "H1": ("Chronic Conditions", "Workplace Accommodations"),
     "H2": ("Chronic Conditions", "ADL Limitations"),
@@ -93,65 +95,34 @@ edges = {
     "H4": ("Mobility Difficulty", "Overall Health"),
     "H5": ("Physical Activity", "Mobility Difficulty"),
     "H6": ("Overall Health", "Sleep Problems"),
-    "H7": ("Support Activities", "# Care Recipients")
+    "H7": ("Support Activities", "# Care Recipients"),
 }
 
-# Add edges with attributes (store the hypothesis label explicitly)
+# Attach attributes
 for h, (u, v), r, q in zip(edges.keys(), edges.values(), r_values, q_values):
     G.add_edge(u, v, hypothesis=h, r=r, q=q, significant=(q < 0.05))
 
-# Node colors
-colors_dict = {
-    "Chronic Conditions": "mistyrose",
-    "Workplace Accommodations": "mistyrose",
-    "ADL Limitations": "mistyrose",
-    "Mobility Difficulty": "khaki",
-    "Overall Health": "khaki",
-    "Mental Health": "khaki",
-    "Physical Health": "khaki",
-    "Sleep Problems": "khaki",
-    "Physical Activity": "lightsteelblue",
-    "Support Activities": "lightsteelblue",
-    "# Care Recipients": "lightsteelblue",
-}
+# Fixed, readable positions (L→R flow)
+pos = {
+    # Inputs / exposures
+    "Chronic Conditions":      (0.10, 0.50),
+    "Physical Activity":       (0.10, 0.28),
+    "Support Activities":      (0.10, 0.10),
 
-plt.figure(figsize=(10, 6.6))
-pos = nx.spring_layout(G, seed=42)
+    # Mid intermediates
+    "Workplace Accommodations":(0.38, 0.78),  # (target from H1)
+    "ADL Limitations":         (0.38, 0.22),  # (target from H2)
+    "Mobility Difficulty":     (0.50, 0.28),  # (target from H5)
+    "Mental Health":           (0.50, 0.65),
 
-nx.draw_networkx_nodes(
-    G, pos,
-    node_color=[colors_dict.get(n, "lightgray") for n in G.nodes()],
-    node_size=2900, edgecolors="gray", linewidths=0.8
-)
-nx.draw_networkx_labels(G, pos, font_size=9, font_weight="bold")
+    # Health status / outcomes
+    "Overall Health":          (0.70, 0.28),  # (target from H4, source for H6)
+    "Physical Health":         (0.80, 0.65),  # (target from H3)
+    "Sleep Problems":          (0.88, 0.14),  # (target from H6)
 
-# Correct iteration for DiGraph: (u, v, data)
-for u, v, data in G.edges(data=True):
-    r = data["r"]; q = data["q"]; significant = data["significant"]
-    color = "red" if r > 0 else "steelblue"
-    style = "-" if significant else (0, (4, 4))  # dashed if not significant
-    width = 2.5 if significant else 1.5
-    alpha = 1.0 if significant else 0.55
-
-    nx.draw_networkx_edges(
-        G, pos, edgelist=[(u, v)],
-        width=width, alpha=alpha, edge_color=color,
-        arrows=True, arrowsize=18, style=style
-    )
-
-    label = f"{data['hypothesis']}: r={r:.3f}, q={q:.3f}"
-    nx.draw_networkx_edge_labels(
-        G, pos,
-        edge_labels={(u, v): label},
-        font_size=8, label_pos=0.5,
-        bbox=dict(boxstyle="round,pad=0.2", fc="white", ec="none", alpha=0.8)
-    )
-
-plt.title("Figure 2. Directed Acyclic Graph of Risk (red) and Resilience (blue) Pathways\n(Solid = q<0.05; Dashed = not significant)")
-plt.tight_layout()
-plt.show()
-
-
+    # Count / context
+    "# Care Recipients":       (0.38, 0.10),  # (target
+    
 # ============================================================================
 # FIGURE 3. CORRELATION MAGNITUDES (bars; significance & direction encoded)
 # ============================================================================
