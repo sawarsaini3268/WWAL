@@ -42,47 +42,6 @@ base_colors = ['red' if r > 0 else 'steelblue' for r in r_values]
 alphas = [1.0 if s else 0.45 for s in sig]
 
 # ============================================================================
-# FIGURE 1. Correlation Coefficients with 95% Confidence Intervals (updated)
-# ============================================================================
-plt.figure(figsize=(8.5, 5.8))
-y = np.arange(len(hypotheses))
-
-# compute symmetric error bars
-xerr_left  = np.array(r_values) - np.array(lower_ci)
-xerr_right = np.array(upper_ci) - np.array(r_values)
-
-for i, (r, lc, uc, c, a, s) in enumerate(zip(r_values, lower_ci, upper_ci, base_colors, alphas, sig)):
-    plt.errorbar(
-        r, i,
-        xerr=[[r - lc], [uc - r]],
-        fmt='o', color=c,
-        ecolor='lightgray', elinewidth=3, capsize=5,
-        alpha=a, markersize=8, label='_nolegend_'
-    )
-
-plt.axvline(0, color='gray', linestyle='--', linewidth=1)
-plt.yticks(y, hypotheses, fontsize=10)
-plt.xlabel("Pearson correlation coefficient (r)", fontsize=11)
-plt.ylabel("Hypothesis", fontsize=11)
-
-# Legend for significance
-from matplotlib.lines import Line2D
-legend_elements = [
-    Line2D([0], [0], marker='o', color='red', label='Positive (q < 0.05)', markersize=8),
-    Line2D([0], [0], marker='o', color='steelblue', label='Negative (q < 0.05)', markersize=8),
-    Line2D([0], [0], marker='o', color='gray', alpha=0.4, label='Not significant (q ≥ 0.05)', markersize=8)
-]
-plt.legend(handles=legend_elements, loc='lower right', frameon=False, fontsize=9)
-
-plt.title(
-    "Figure 1. Pearson Correlation Coefficients with 95% Confidence Intervals\n"
-    "(opaque = q<0.05; faded = not significant)",
-    pad=16
-)
-plt.tight_layout()
-plt.show()
-
-# ============================================================================
 # FIGURE 2. DAG – Clean layout + side table (no cluttered edge labels)
 # ============================================================================
 import matplotlib.gridspec as gridspec
